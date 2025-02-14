@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #FFD1DC;
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            padding: 10px;
+        }
+        .container {
+            background: #FFC0CB;
+            padding: 30px;
+            border-radius: 10px;
+            border: 4px solid #FF69B4;
+            box-shadow: 5px 5px 0px #FF69B4;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            position: relative;
+        }
+        .question {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: 'Press Start 2P', cursive;
+        }
+        .yes {
+            background-color: #FFB6C1;
+        }
+        .no {
+            background-color: #FF69B4;
+            position: absolute;
+        }
+        .hidden {
+            display: none;
+        }
+        #sadImage, #finalImage {
+            width: 250px; /* Ajusta el tamaño según necesites */
+            height: 250px;
+            object-fit: fill; /* Esto hará que la imagen se estire completamente */
+            margin-top: 20px;
+            border-radius: 10px;
+            border: 3px solid #FF69B4;
+        }
+
+        #randomQuestion {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        #warningMessage {
+            margin-top: 10px;
+            font-size: 14px;
+            color: red;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <p class="question">Would you be my Valentine?</p>
+        <div class="buttons">
+            <button class="yes" onclick="showLove()">Sí</button>
+            <button class="no" onclick="moveButton()">No</button>
+        </div>
+    </div>
+    <img id="sadImage" class="hidden" alt="Sad Image"> 
+    <p id="randomQuestion"></p>
+    <p id="warningMessage" class="hidden">Eso fue demasiado rápido, me parece sospechoso o.O</p>
+    
+    <script>
+        const sadQuestions = [
+            "pk???",
+            "¿Por qué? :c", 
+            "¿Estás seguro de que no quieres ser mi San Valentín? :(((", 
+            "¿Me estás rompiendo el corazón? 💔", 
+            "ok, entiendo",
+            "¿De verdad vas a decir que no? 😢",
+            "¿No lo vas a pensar tan siquiera?",
+            "porfis",
+            "Pero... ¿y todo lo que hemos vivido? 🥺",
+            "me parece terrible"
+        ];
+                const sadImages = [
+                        "sad1.JPG",
+                        "sad2.JPG",
+                        "sad3.JPG",
+                        "sad4.JPG",
+                        "sad5.JPG",
+                        "sad6.JPG",
+                        "sad7.JPG",
+                        "sad8.JPG",
+                    ];
+
+
+        let firstYes = true;
+        let lastPosition = { x: 0, y: 0 };
+        
+        function moveButton() {
+            document.getElementById("warningMessage").classList.add("hidden");
+            let button = document.querySelector('.no');
+            let container = document.querySelector('.container');
+            let maxX = container.clientWidth - 50;
+            let maxY = container.clientHeight - 50;
+            let minX = -maxX / 2;
+            let minY = -maxY / 2;
+            let randomX, randomY;
+            
+            do {
+                randomX = Math.random() * (maxX - minX) + minX;
+                randomY = Math.random() * (maxY - minY) + minY;
+            } while (Math.abs(randomX - lastPosition.x) < 50 && Math.abs(randomY - lastPosition.y) < 30);
+            
+            lastPosition = { x: randomX, y: randomY };
+            button.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            
+            let randomIndex = Math.floor(Math.random() * sadQuestions.length);
+            document.getElementById("randomQuestion").innerText = sadQuestions[randomIndex];
+            
+            let imgIndex = Math.floor(Math.random() * sadImages.length);
+            let sadImage = document.getElementById("sadImage");
+            sadImage.src = sadImages[imgIndex];
+            sadImage.classList.remove("hidden");
+        }
+        
+        function showLove() {
+            document.getElementById("warningMessage").classList.add("hidden");
+            if (firstYes) {
+                document.getElementById("warningMessage").classList.remove("hidden");
+                firstYes = false;
+            } else {
+                document.body.innerHTML = '<h1>¡Yay! 💖 Feliz San Valentín, mi amor! 🥰</h1><img id="finalImage" src="catLove.jpg" alt="Happy Image">';
+            }
+        }
+    </script>
+</body>
+</html>
