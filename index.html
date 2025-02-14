@@ -116,38 +116,44 @@
         let firstYes = true;
         let lastPosition = { x: 0, y: 0 };
         
-        function moveButton() {
-            document.getElementById("warningMessage").classList.add("hidden");
-            let button = document.querySelector('.no');
-            let container = document.querySelector('.container');
+       function moveButton() {
+                document.getElementById("warningMessage").classList.add("hidden");
+                let button = document.querySelector('.no');
+                let container = document.querySelector('.container');
+                
+                let containerRect = container.getBoundingClientRect();
+                let buttonRect = button.getBoundingClientRect();
             
-            let containerRect = container.getBoundingClientRect();
-            let buttonRect = button.getBoundingClientRect();
-        
-            let maxX = containerRect.width - buttonRect.width - 10; // Ajusta el espacio máximo horizontal
-            let maxY = containerRect.height - buttonRect.height - 10; // Ajusta el espacio máximo vertical
-        
-            let minX = -maxX / 2;
-            let minY = -maxY / 2;
-        
-            let randomX, randomY;
+                // Asegurar que el botón no se salga de los límites de la pantalla
+                let maxX = window.innerWidth - buttonRect.width - 20; 
+                let maxY = window.innerHeight - buttonRect.height - 20; 
             
-            do {
-                randomX = Math.random() * (maxX - minX) + minX;
-                randomY = Math.random() * (maxY - minY) + minY;
-            } while (Math.abs(randomX - lastPosition.x) < 50 && Math.abs(randomY - lastPosition.y) < 30);
-        
-            lastPosition = { x: randomX, y: randomY };
-            button.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        
-            let randomIndex = Math.floor(Math.random() * sadQuestions.length);
-            document.getElementById("randomQuestion").innerText = sadQuestions[randomIndex];
-        
-            let imgIndex = Math.floor(Math.random() * sadImages.length);
-            let sadImage = document.getElementById("sadImage");
-            sadImage.src = sadImages[imgIndex];
-            sadImage.classList.remove("hidden");
-}
+                let minX = 20; // Margen mínimo para que no toque los bordes
+                let minY = 20;
+            
+                let randomX, randomY;
+                
+                do {
+                    randomX = Math.floor(Math.random() * (maxX - minX) + minX);
+                    randomY = Math.floor(Math.random() * (maxY - minY) + minY);
+                } while (Math.abs(randomX - lastPosition.x) < 50 && Math.abs(randomY - lastPosition.y) < 30);
+            
+                lastPosition = { x: randomX, y: randomY };
+                
+                // Posicionar directamente usando left y top
+                button.style.position = "absolute";
+                button.style.left = `${randomX}px`;
+                button.style.top = `${randomY}px`;
+            
+                let randomIndex = Math.floor(Math.random() * sadQuestions.length);
+                document.getElementById("randomQuestion").innerText = sadQuestions[randomIndex];
+            
+                let imgIndex = Math.floor(Math.random() * sadImages.length);
+                let sadImage = document.getElementById("sadImage");
+                sadImage.src = sadImages[imgIndex];
+                sadImage.classList.remove("hidden");
+            }
+
 
         
         function showLove() {
