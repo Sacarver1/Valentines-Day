@@ -120,28 +120,35 @@
             document.getElementById("warningMessage").classList.add("hidden");
             let button = document.querySelector('.no');
             let container = document.querySelector('.container');
-            let maxX = container.clientWidth - 50;
-            let maxY = container.clientHeight - 50;
+            
+            let containerRect = container.getBoundingClientRect();
+            let buttonRect = button.getBoundingClientRect();
+        
+            let maxX = containerRect.width - buttonRect.width - 10; // Ajusta el espacio máximo horizontal
+            let maxY = containerRect.height - buttonRect.height - 10; // Ajusta el espacio máximo vertical
+        
             let minX = -maxX / 2;
             let minY = -maxY / 2;
+        
             let randomX, randomY;
             
             do {
                 randomX = Math.random() * (maxX - minX) + minX;
                 randomY = Math.random() * (maxY - minY) + minY;
             } while (Math.abs(randomX - lastPosition.x) < 50 && Math.abs(randomY - lastPosition.y) < 30);
-            
+        
             lastPosition = { x: randomX, y: randomY };
             button.style.transform = `translate(${randomX}px, ${randomY}px)`;
-            
+        
             let randomIndex = Math.floor(Math.random() * sadQuestions.length);
             document.getElementById("randomQuestion").innerText = sadQuestions[randomIndex];
-            
+        
             let imgIndex = Math.floor(Math.random() * sadImages.length);
             let sadImage = document.getElementById("sadImage");
             sadImage.src = sadImages[imgIndex];
             sadImage.classList.remove("hidden");
-        }
+}
+
         
         function showLove() {
             document.getElementById("warningMessage").classList.add("hidden");
